@@ -1,0 +1,103 @@
+File pipe_1.c
+To run the file:
+Compile: gcc -o pipe_example pipe_example.c
+Run: ./pipe_example 3(number of choice)
+Output Example:
+Creating 3 children
+FATHER: I received from children:
+Hello from child  1 (pid=xxxx)
+Hello from child  2 (pid=xxxx)
+Hello from child  3 (pid=xxxx)
+
+Explanation
+The program creates N child processes, where N is a command-line argument.
+Each child process sends a "Hello" message with its number and PID to the parent process via a pipe.
+The parent reads and prints these messages, demonstrating inter-process communication using pipes and fork() in C.
+
+File pipe_2.c
+This C program demonstrates basic pipe usage for communication between a parent and a child process.
+To run the file:
+Compile: gcc -o simple_pipe simple_pipe.c
+Run: ./simple_pipe
+Output Example:
+message through pipe
+
+Explanation
+The program creates a single pipe and then forks a child process.
+The parent process writes "message through pipe" to the writing end of the pipe and then closes it.
+The child process reads this message from the reading end of the pipe and prints it to stdout.
+
+File signal.c
+This program is an example of using fork, execvp, alarm, and signal handling in C to monitor and potentially terminate a long-running child process.
+To run the file:
+Compile: gcc -o alarm_process alarm_process.c
+Run: ./alarm_process -15(time of choice in seconds optional) ls(command of choice)
+Output Example:
+Executing: ls
+(Output of ls command)
+
+Explanation
+The program takes an optional argument for a timeout duration (default 10 seconds) and a command to execute.
+It forks a child process where the specified command is executed using execvp.
+In the parent, an alarm is set for the specified duration.
+If the child process doesn't finish within this time, it's killed by the parent (which receives a SIGALRM signal).
+The parent waits for the child's completion and prints a message if the child is terminated prematurely.
+
+File immun2ctrlC.c
+To run the file:
+Compile: gcc -o ignore_sigint ignore_sigint.c
+Run: ./ignore_sigint 10(time of choice in seconds)
+Output Example:
+it's just a printout of sleeping for: 10 seconds(time of choice)
+
+Explanation
+The program takes a single command-line argument, which specifies the number of seconds it should sleep.
+The signal(SIGINT, SIG_IGN) function call tells the program to ignore the SIGINT signal.
+The program then goes into sleep for the specified duration, during which it will ignore any SIGINT(Ctrl+c) signals.
+
+File example_sleep.c
+To run the file:
+Compile: gcc -o example_sleep example_sleep.c
+Run: ./example_sleep
+Output Example:
+Going to sleep for a second...(Repeated until Ctrl+C is pressed)
+Going to sleep for a second...(Repeated until Ctrl+C is pressed)
+(Pressing Ctrl+C)
+Caught signal 2, coming out...
+
+Explanation
+The program defines a custom signal handler sighandler that handles SIGINT signals.
+It continuously prints a message and sleeps for one second in a loop.
+Upon receiving a SIGINT signal (typically from pressing Ctrl+C), the sighandler function is triggered, printing the signal number and terminating the program.
+
+File example_pause.c
+To run the file:
+Compile: gcc -o example_pause example_pause.c
+Run: ./example_pause 5(time of choice in seconds)
+Output Example:
+The time before pause is [current time]
+(Waits for 5 seconds)
+Signal catcher called for signal 14(SIGALRM)
+The time after pause is [current time 5 seconds later]
+
+Explanation
+The program sets an alarm for a number of seconds specified as a command-line argument.
+It defines a custom signal handler catcher for the SIGALRM signal.
+After setting the alarm, the program prints the current time, pauses until a signal is received, and then prints the time again after handling the signal.
+This demonstrates the use of alarm, pause, and custom signal handling in C, particularly for implementing a simple timer.
+
+File example_kill.c
+To run the file:
+Compile: gcc -o example_kill example_kill.c
+Run: ./example_kill 100(number of iterations for the loop inside the sendsig function)
+Output Example:
+Back in main
+The kill() function was called 10 times
+The signal catching function was called 10 times
+
+Explanation
+The program accepts an integer argument that specifies the number of iterations.
+It sets up a signal handler for SIGUSR1 using the signal() function.
+The sendsig function sends the SIGUSR1 signal to the process itself using kill(getpid(), SIGUSR1) every 10 iterations.
+The catcher function, set as the handler for SIGUSR1, increments a counter each time it's called.
+After sendsig completes, the program prints how many times kill() was called and how many times the signal was caught.
