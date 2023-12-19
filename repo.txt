@@ -1,0 +1,6 @@
+The repo link on Github:
+https://github.com/arseauth/GitHashingExercise.git
+Use the Git Clone Command to clone the the repo to your system:
+git clone https://github.com/arseauth/GitHashingExercise.git
+Navigate to the Cloned Repository:
+cd GitHashingExercise
